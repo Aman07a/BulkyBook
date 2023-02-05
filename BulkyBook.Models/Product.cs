@@ -44,8 +44,8 @@ namespace BulkyBook.Models
 
 		[Required]
 		public int CategoryId { get; set; }
-		[ForeignKey("CategoryId")]
 
+		[ForeignKey("CategoryId")]
 		public Category Category { get; set; }
 
 		[Required]
