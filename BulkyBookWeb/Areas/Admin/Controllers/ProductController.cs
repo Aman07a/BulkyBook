@@ -6,115 +6,90 @@ using System.Linq;
 
 namespace BulkyBookWeb.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    public class ProductController : Controller
-    {
-        private readonly IUnitOfWork _unitOfWork;
+	[Area("Admin")]
+	public class ProductController : Controller
+	{
+		private readonly IUnitOfWork _unitOfWork;
 
-        public ProductController(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+		public ProductController(IUnitOfWork unitOfWork)
+		{
+			_unitOfWork = unitOfWork;
+		}
 
-        public IActionResult Index()
-        {
-            IEnumerable<Product> objProductList = _unitOfWork.Product.GetAll();
-            return View(objProductList);
-        }
+		public IActionResult Index()
+		{
+			IEnumerable<Product> objProductList = _unitOfWork.Product.GetAll();
+			return View(objProductList);
+		}
 
-        // GET
-        public IActionResult Create()
-        {
-            return View();
-        }
+		// GET
+		public IActionResult Upsert(int? id)
+		{
+			Product product = new();
 
-        // POST
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Product obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Product.Add(obj);
-                _unitOfWork.Save();
-                TempData["success"] = "Product created successfully";
-                return RedirectToAction("Index");
-            }
-            return View(obj);
-        }
+			if (id == null || id == 0)
+			{
+				// Create product
+				return View(product);
+			}
+			else
+			{
+				// Update product
+			}
 
-        // GET
-        public IActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
+			return View();
+		}
 
-            // var ProductFromDb = _db.Categories.Find(id);
-            var ProductFromDbFirst = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);
-            // var ProductFromDbSingle = _db.Categories.SingleOrDefault(u => u.Id == id);
+		// POST
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Upsert(Product obj)
+		{
+			if (ModelState.IsValid)
+			{
+				_unitOfWork.Product.Update(obj);
+				_unitOfWork.Save();
+				TempData["success"] = "Product updated successfully";
+				return RedirectToAction("Index");
+			}
 
-            if (ProductFromDbFirst == null)
-            {
-                return NotFound();
-            }
+			return View(obj);
+		}
 
-            return View(ProductFromDbFirst);
-        }
+		// GET
+		public IActionResult Delete(int? id)
+		{
+			Product product = new();
 
-        // POST
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Product obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Product.Update(obj);
-                _unitOfWork.Save();
-                TempData["success"] = "Product updated successfully";
-                return RedirectToAction("Index");
-            }
+			if (id == null || id == 0)
+			{
+				// Create product
+				return View(product);
+			}
+			else
+			{
+				// Delete product
+			}
 
-            return View(obj);
-        }
+			return View();
+		}
 
-        // GET
-        public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
+		// POST
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public IActionResult DeletePOST(int? id)
+		{
+			var obj = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);
 
-            // var ProductFromDb = _db.Categories.Find(id);
-            var ProductFromDbFirst = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);
-            // var ProductFromDbSingle = _db.Categories.SingleOrDefault(u => u.Id == id);
+			if (obj == null)
+			{
+				return NotFound();
+			}
 
-            if (ProductFromDbFirst == null)
-            {
-                return NotFound();
-            }
-
-            return View(ProductFromDbFirst);
-        }
-
-        // POST
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeletePOST(int? id)
-        {
-            var obj = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);
-
-            if (obj == null)
-            {
-                return NotFound();
-            }
-
-            _unitOfWork.Product.Remove(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "Product deleted successfully";
-            return RedirectToAction("Index");
-        }
-    }
+			_unitOfWork.Product.Remove(obj);
+			_unitOfWork.Save();
+			TempData["success"] = "Product deleted successfully";
+			return RedirectToAction("Index");
+		}
+	}
 }
