@@ -58,3 +58,10 @@ body {
     white-space: nowrap;
     line-height: 60px;
 }
+
+.card-footer a.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+}
