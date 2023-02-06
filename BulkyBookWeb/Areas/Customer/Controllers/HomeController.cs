@@ -1,13 +1,12 @@
 ﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
-using BulkyBook.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Diagnostics;
 
 namespace BulkyBookWeb.Areas.Customer.Controllers
 {
-	[Area("Customer")]
+    [Area("Customer")]
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
