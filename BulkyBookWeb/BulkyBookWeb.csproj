@@ -25,7 +25,8 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="wwroot\css\**" />
+		<Folder Include="wwwroot\css\**" />
+		<Folder Include="wwwroot\images\products\" />
 	</ItemGroup>
 
 </Project>
