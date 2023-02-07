@@ -6,7 +6,7 @@
 
 <h1 class="pt-4">@ViewData["Title"]</h1>
 
-<div class="row pt-4">
+<div class="row" style="margin-bottom: 5em !important;">
     <div class="col-md-7">
         <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>Create a new account.</h2>
@@ -58,7 +58,12 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-primary">Register</button>
+            <div class="py-2 col-6">
+                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class=form-select>
+                    <option disabled selected>-Select Role-</option>
+                </select>
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-dark">Register</button>
         </form>
     </div>
     <div class="col-md-5">
