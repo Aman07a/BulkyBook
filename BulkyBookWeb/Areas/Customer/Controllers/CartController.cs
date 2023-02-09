@@ -180,6 +180,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 				return RedirectToAction("OrderConfirmation", "Cart", new { id = ShoppingCartVM.OrderHeader.Id });
 			}
 		}
+		
 		public IActionResult OrderConfirmation(int id)
 		{
 			OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(u => u.Id == id);
@@ -192,6 +193,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 				// Check the stripe status
 				if (session.PaymentStatus.ToLower() == "paid")
 				{
+					_unitOfWork.OrderHeader.UpdateStripePaymentID(id, orderHeader.SessionId, session.PaymentIntentId);
 					_unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
 					_unitOfWork.Save();
 				}
